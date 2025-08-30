@@ -15,6 +15,12 @@ variable "GKE_MACHINE_TYPE" {
   description = "Machine type"
 }
 
+variable "GKE_DISK_SIZE_GB" {
+  type        = string
+  default     = "30"
+  description = "Size of the disk attached to each node, specified in GB"
+}
+
 variable "GKE_NUM_NODES" {
   type        = number
   default     = 2
