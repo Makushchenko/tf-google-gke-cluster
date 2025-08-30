@@ -38,3 +38,9 @@ variable "GKE_POOL_NAME" {
   default     = "main"
   description = "GKE pool name"
 }
+
+variable "GKE_DELETION_PROTECTION" {
+  type        = bool
+  default     = true
+  description = "GKE deletion protection"
+}

@@ -2,6 +2,9 @@
 resource "google_container_cluster" "this" {
   # Name of the cluster
   name = var.GKE_CLUSTER_NAME
+  # GCP project to use
+  project = var.GOOGLE_PROJECT
+
   # Location (region) for the cluster
   location = var.GOOGLE_REGION
 
@@ -9,6 +12,8 @@ resource "google_container_cluster" "this" {
   initial_node_count = 1
   # Remove default node pool to use custom node pools instead
   remove_default_node_pool = true
+
+  deletion_protection = var.GKE_DELETION_PROTECTION
 
   # Workload Identity configuration for GKE
   workload_identity_config {
@@ -38,9 +43,10 @@ resource "google_container_node_pool" "this" {
 
   # Node configuration
   node_config {
+    # Disk size for the nodes
+    disk_size_gb = var.GKE_DISK_SIZE_GB
     # Machine type for the nodes
     machine_type = var.GKE_MACHINE_TYPE
-    disk_size_gb = var.GKE_DISK_SIZE_GB
   }
 }
 
