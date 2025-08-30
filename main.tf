@@ -1,11 +1,3 @@
-# Configure the Google Cloud provider
-provider "google" {
-  # The GCP project to use
-  project = var.GOOGLE_PROJECT
-  # The GCP region to deploy resources in
-  region = var.GOOGLE_REGION
-}
-
 # Create the GKE (Google Kubernetes Engine) cluster
 resource "google_container_cluster" "this" {
   # Name of the cluster
@@ -53,9 +45,6 @@ resource "google_container_node_pool" "this" {
 
 # Module to authenticate with GKE cluster using native Terraform module
 module "gke_auth" {
-  depends_on = [
-    google_container_cluster.this
-  ]
   # Source of the module (Terraform Registry)
   source  = "terraform-google-modules/kubernetes-engine/google//modules/auth"
   version = ">= 24.0.0"
@@ -63,15 +52,8 @@ module "gke_auth" {
   project_id   = var.GOOGLE_PROJECT
   cluster_name = google_container_cluster.this.name
   location     = var.GOOGLE_REGION
-}
 
-# Data source to retrieve the current Google client configuration
-data "google_client_config" "current" {}
-
-# Data source to fetch details about the created GKE cluster
-data "google_container_cluster" "main" {
-  # Name of the cluster
-  name = google_container_cluster.this.name
-  # Location (region)
-  location = var.GOOGLE_REGION
+  depends_on = [
+    google_container_cluster.this
+  ]
 }

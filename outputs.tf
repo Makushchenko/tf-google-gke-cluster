@@ -1,18 +1,24 @@
-output "config_host" {
-  value = "https://${data.google_container_cluster.main.endpoint}"
+output "endpoint" {
+  description = "Cluster endpoint"
+  value       = google_container_cluster.this.private_cluster_config[0].private_endpoint
+  depends_on = [
+    google_container_cluster.this
+  ]
 }
 
-output "config_token" {
-  value = data.google_client_config.current.access_token
-  sensitive = true
+output "ca_certificate" {
+  sensitive   = true
+  description = "Cluster ca certificate (base64 encoded)"
+  value       = google_container_cluster.this.master_auth[0].cluster_ca_certificate
+  depends_on = [
+    google_container_cluster.this
+  ]
 }
 
-output "config_ca" {
-  value = base64decode(
-    data.google_container_cluster.main.master_auth[0].cluster_ca_certificate,
-  )
-}
-
-output "name" {
-  value = google_container_cluster.this.name
+output "cluster_name" {
+  description = "Cluster name"
+  value       = google_container_cluster.this.name
+  depends_on = [
+    google_container_cluster.this
+  ]
 }
