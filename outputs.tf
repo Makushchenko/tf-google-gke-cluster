@@ -13,9 +13,9 @@ output "config_token" {
 }
 
 output "ca_certificate" {
-  sensitive   = true
   description = "Cluster ca certificate (base64 encoded)"
   value       = google_container_cluster.this.master_auth[0].cluster_ca_certificate
+  sensitive   = true
   depends_on = [
     google_container_cluster.this
   ]
