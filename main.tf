@@ -64,3 +64,10 @@ module "gke_auth" {
     google_container_cluster.this
   ]
 }
+
+data "google_client_config" "current" {}
+
+data "google_container_cluster" "main" {
+  name     = google_container_cluster.this.name
+  location = var.GOOGLE_REGION
+}
